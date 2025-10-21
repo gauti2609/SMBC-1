@@ -1,0 +1,62 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.1, pytest-8.4.2, pluggy-1.6.0 -- /home/codespace/.python/current/bin/python
+cachedir: .pytest_cache
+PyQt5 5.15.11 -- Qt runtime 5.15.17 -- Qt compiled 5.15.14
+rootdir: /workspaces/SMBC-1/FinancialAutomation/deployment_package_v1.0
+configfile: pytest.ini
+plugins: anyio-4.9.0, qt-4.5.0
+collecting ... collected 35 items
+
+tests/test_backend_database.py::TestDatabaseOperations::test_create_user PASSED [  2%]
+tests/test_backend_database.py::TestDatabaseOperations::test_create_company PASSED [  5%]
+tests/test_backend_database.py::TestDatabaseOperations::test_get_user_companies PASSED [  8%]
+tests/test_backend_database.py::TestDatabaseOperations::test_create_major_head FAILED [ 11%]
+tests/test_backend_database.py::TestDatabaseOperations::test_create_minor_head FAILED [ 14%]
+tests/test_backend_database.py::TestDatabaseOperations::test_delete_company FAILED [ 17%]
+tests/test_backend_database.py::TestDatabaseOperations::test_update_company FAILED [ 20%]
+tests/test_backend_database.py::TestBusinessLogic::test_trial_balance_validation FAILED [ 22%]
+tests/test_backend_database.py::TestBusinessLogic::test_financial_year_validation PASSED [ 25%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_button_exists Fatal Python error: Aborted
+
+Current thread 0x000077762df6b740 (most recent call first):
+  File "/workspaces/SMBC-1/FinancialAutomation/deployment_package_v1.0/tests/conftest.py", line 37 in qapp
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/fixtures.py", line 923 in call_fixture_func
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/fixtures.py", line 1196 in pytest_fixture_setup
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/fixtures.py", line 1128 in execute
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/fixtures.py", line 640 in _get_active_fixturedef
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/fixtures.py", line 549 in getfixturevalue
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/fixtures.py", line 720 in _fillfixtures
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/python.py", line 1674 in setup
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 514 in setup
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 164 in pytest_runtest_setup
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 246 in <lambda>
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 344 in from_call
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 245 in call_and_report
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 130 in runtestprotocol
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/runner.py", line 117 in pytest_runtest_protocol
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/main.py", line 367 in pytest_runtestloop
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/main.py", line 343 in _main
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/main.py", line 289 in wrap_session
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/main.py", line 336 in pytest_cmdline_main
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/usr/local/python/3.12.1/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: PyQt5.QtCore, PyQt5.QtGui, PyQt5.QtWidgets, PyQt5.QtTest (total: 4)

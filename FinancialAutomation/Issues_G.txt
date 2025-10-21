@@ -1,0 +1,74 @@
+PS C:\Financials Automation_Github\FinancialAutomation_v1.0_Complete\deployment_package_v1.0> python -m pytest tests/ -v --tb=short -W default
+================================================= test session starts =================================================
+platform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\mishr\AppData\Local\Programs\Python\Python313\python.exe
+cachedir: .pytest_cache
+PyQt5 5.15.11 -- Qt runtime 5.15.2 -- Qt compiled 5.15.2
+rootdir: C:\Financials Automation_Github\FinancialAutomation_v1.0_Complete\deployment_package_v1.0
+configfile: pytest.ini
+plugins: anyio-4.10.0, cov-7.0.0, qt-4.5.0, timeout-2.4.0
+collected 35 items
+
+tests/test_backend_database.py::TestDatabaseOperations::test_create_user PASSED                                  [  2%]
+tests/test_backend_database.py::TestDatabaseOperations::test_create_company PASSED                               [  5%]
+tests/test_backend_database.py::TestDatabaseOperations::test_get_user_companies PASSED                           [  8%]
+tests/test_backend_database.py::TestDatabaseOperations::test_create_major_head PASSED                            [ 11%]
+tests/test_backend_database.py::TestDatabaseOperations::test_create_minor_head PASSED                            [ 14%]
+tests/test_backend_database.py::TestDatabaseOperations::test_delete_company PASSED                               [ 17%]
+tests/test_backend_database.py::TestDatabaseOperations::test_update_company PASSED                               [ 20%]
+tests/test_backend_database.py::TestBusinessLogic::test_trial_balance_validation PASSED                          [ 22%]
+tests/test_backend_database.py::TestBusinessLogic::test_financial_year_validation PASSED                         [ 25%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_button_exists PASSED                   [ 28%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_menu_action_exists PASSED              [ 31%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_button_click_switches_tab PASSED       [ 34%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_clears_form PASSED                     [ 37%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_shows_status_message PASSED            [ 40%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_company_form_has_required_fields PASSED            [ 42%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_save_company_button_exists PASSED                  [ 45%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_save_company_with_valid_data PASSED                [ 48%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_save_company_validation_empty_name PASSED          [ 51%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_company_selector_updates_after_save PASSED         [ 54%]
+tests/test_gui_company_creation.py::TestCompanyCreation::test_complete_company_creation_workflow PASSED          [ 57%]
+tests/test_gui_login.py::TestLoginWindow::test_login_window_opens PASSED                                         [ 60%]
+tests/test_gui_login.py::TestLoginWindow::test_login_form_widgets_exist PASSED                                   [ 62%]
+tests/test_gui_login.py::TestLoginWindow::test_registration_form_widgets_exist PASSED                            [ 65%]
+tests/test_gui_login.py::TestLoginWindow::test_valid_login PASSED                                                [ 68%]
+tests/test_gui_login.py::TestLoginWindow::test_invalid_login PASSED                                              [ 71%]
+tests/test_gui_login.py::TestLoginWindow::test_registration_success PASSED                                       [ 74%]
+tests/test_gui_login.py::TestLoginWindow::test_empty_login_validation PASSED                                     [ 77%]
+tests/test_gui_main_window.py::TestMainWindow::test_main_window_loads PASSED                                     [ 80%]
+tests/test_gui_main_window.py::TestMainWindow::test_all_tabs_exist PASSED                                        [ 82%]
+tests/test_gui_main_window.py::TestMainWindow::test_menu_bar_exists PASSED                                       [ 85%]
+tests/test_gui_main_window.py::TestMainWindow::test_toolbar_exists PASSED                                        [ 88%]
+tests/test_gui_main_window.py::TestMainWindow::test_status_bar_exists PASSED                                     [ 91%]
+tests/test_gui_main_window.py::TestMainWindow::test_company_selector_exists PASSED                               [ 94%]
+tests/test_gui_main_window.py::TestMainWindow::test_tab_switching PASSED                                         [ 97%]
+tests/test_gui_main_window.py::TestMainWindow::test_window_title_updates_with_company PASSED                     [100%]
+
+========================================== 35 passed, 37 warnings in 15.04s ===========================================
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288917F6D40>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A23E0>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A24D0>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A1A80>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A18A0>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A0F40>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A25C0>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A1210>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A22F0>
+  gc.collect()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback

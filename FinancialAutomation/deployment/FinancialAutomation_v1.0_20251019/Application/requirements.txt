@@ -1,0 +1,11 @@
+PyQt5>=5.15.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+xlsxwriter>=3.0.0
+pyinstaller>=5.0.0
+
+# Database drivers
+psycopg2-binary>=2.9.0  # PostgreSQL adapter for network database
+python-dotenv>=1.0.0    # Environment variable management
+requests>=2.31.0        # License server API client
+cryptography>=41.0.0

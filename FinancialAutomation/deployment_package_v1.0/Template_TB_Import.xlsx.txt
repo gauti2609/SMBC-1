@@ -1,0 +1,43 @@
+# Template_TB_Import.xlsx Structure
+
+This is a template file showing the required column structure for Trial Balance imports.
+
+## Required Columns (in this order):
+
+1. **Account Code** - Alphanumeric code (e.g., "1000", "AC001")
+2. **Account Name** - Full account name (e.g., "Cash in Hand")
+3. **Major Head** - Schedule III category (e.g., "Current Assets", "Revenue")
+4. **Minor Head** - Subcategory (e.g., "Cash and Cash Equivalents", "Sale of Products")
+5. **Opening Balance** - Previous year closing balance
+6. **Debit** - Total debits for the year
+7. **Credit** - Total credits for the year
+8. **Closing Balance** - Current year closing balance
+9. **Note Ref** - Schedule III note reference (e.g., "Note 10", "Note 24")
+10. **Remarks** - Optional notes or comments
+
+## Sample Row:
+
+| Account Code | Account Name | Major Head | Minor Head | Opening Balance | Debit | Credit | Closing Balance | Note Ref | Remarks |
+|--------------|-------------|------------|------------|-----------------|-------|--------|-----------------|----------|---------|
+| 1001 | Cash in Hand | Current Assets | Cash and Cash Equivalents | 50000 | 100000 | 80000 | 70000 | Note 13 | |
+
+## Important Notes:
+
+- First row must be headers (exact column names as above)
+- Data starts from row 2
+- All numeric values should be positive numbers
+- Empty cells are allowed in Remarks column
+- File must be in .xlsx format (Excel)
+
+## Use Case:
+
+1. Open this template in Excel
+2. Delete sample data (keep headers)
+3. Fill in your company's trial balance data
+4. Save as .xlsx file
+5. Import in the application (TB Import tab)
+
+For a complete example with 271 entries, see Sample_TB.xlsx
+
+---
+*Note: Actual Excel template file should be created separately*
