@@ -1,74 +1,129 @@
-PS C:\Financials Automation_Github\FinancialAutomation_v1.0_Complete\deployment_package_v1.0> python -m pytest tests/ -v --tb=short -W default
-================================================= test session starts =================================================
-platform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.6.0 -- C:\Users\mishr\AppData\Local\Programs\Python\Python313\python.exe
-cachedir: .pytest_cache
-PyQt5 5.15.11 -- Qt runtime 5.15.2 -- Qt compiled 5.15.2
-rootdir: C:\Financials Automation_Github\FinancialAutomation_v1.0_Complete\deployment_package_v1.0
-configfile: pytest.ini
-plugins: anyio-4.10.0, cov-7.0.0, qt-4.5.0, timeout-2.4.0
-collected 35 items
+PS C:\Financials Automation_Github\deployment_package_v1.0_FINAL_BUGFIXED\deployment_package_v1.0_FINAL_BUGFIXED> pip install -r requirements.txt
+Requirement already satisfied: PyQt5==5.15.11 in c:\users\mishr\appdata\local\programs\python\python313\lib\site-packages (from -r requirements.txt (line 1)) (5.15.11)
+Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 2))
+  Using cached psycopg2-binary-2.9.9.tar.gz (384 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting python-dotenv==1.0.0 (from -r requirements.txt (line 3))
+  Using cached python_dotenv-1.0.0-py3-none-any.whl.metadata (21 kB)
+Requirement already satisfied: PyQt5-sip<13,>=12.15 in c:\users\mishr\appdata\local\programs\python\python313\lib\site-packages (from PyQt5==5.15.11->-r requirements.txt (line 1)) (12.17.1)
+Requirement already satisfied: PyQt5-Qt5<5.16.0,>=5.15.2 in c:\users\mishr\appdata\local\programs\python\python313\lib\site-packages (from PyQt5==5.15.11->-r requirements.txt (line 1)) (5.15.2)
+Using cached python_dotenv-1.0.0-py3-none-any.whl (19 kB)
+Building wheels for collected packages: psycopg2-binary
+  Building wheel for psycopg2-binary (pyproject.toml) ... error
+  error: subprocess-exited-with-error
 
-tests/test_backend_database.py::TestDatabaseOperations::test_create_user PASSED                                  [  2%]
-tests/test_backend_database.py::TestDatabaseOperations::test_create_company PASSED                               [  5%]
-tests/test_backend_database.py::TestDatabaseOperations::test_get_user_companies PASSED                           [  8%]
-tests/test_backend_database.py::TestDatabaseOperations::test_create_major_head PASSED                            [ 11%]
-tests/test_backend_database.py::TestDatabaseOperations::test_create_minor_head PASSED                            [ 14%]
-tests/test_backend_database.py::TestDatabaseOperations::test_delete_company PASSED                               [ 17%]
-tests/test_backend_database.py::TestDatabaseOperations::test_update_company PASSED                               [ 20%]
-tests/test_backend_database.py::TestBusinessLogic::test_trial_balance_validation PASSED                          [ 22%]
-tests/test_backend_database.py::TestBusinessLogic::test_financial_year_validation PASSED                         [ 25%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_button_exists PASSED                   [ 28%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_menu_action_exists PASSED              [ 31%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_button_click_switches_tab PASSED       [ 34%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_clears_form PASSED                     [ 37%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_new_company_shows_status_message PASSED            [ 40%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_company_form_has_required_fields PASSED            [ 42%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_save_company_button_exists PASSED                  [ 45%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_save_company_with_valid_data PASSED                [ 48%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_save_company_validation_empty_name PASSED          [ 51%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_company_selector_updates_after_save PASSED         [ 54%]
-tests/test_gui_company_creation.py::TestCompanyCreation::test_complete_company_creation_workflow PASSED          [ 57%]
-tests/test_gui_login.py::TestLoginWindow::test_login_window_opens PASSED                                         [ 60%]
-tests/test_gui_login.py::TestLoginWindow::test_login_form_widgets_exist PASSED                                   [ 62%]
-tests/test_gui_login.py::TestLoginWindow::test_registration_form_widgets_exist PASSED                            [ 65%]
-tests/test_gui_login.py::TestLoginWindow::test_valid_login PASSED                                                [ 68%]
-tests/test_gui_login.py::TestLoginWindow::test_invalid_login PASSED                                              [ 71%]
-tests/test_gui_login.py::TestLoginWindow::test_registration_success PASSED                                       [ 74%]
-tests/test_gui_login.py::TestLoginWindow::test_empty_login_validation PASSED                                     [ 77%]
-tests/test_gui_main_window.py::TestMainWindow::test_main_window_loads PASSED                                     [ 80%]
-tests/test_gui_main_window.py::TestMainWindow::test_all_tabs_exist PASSED                                        [ 82%]
-tests/test_gui_main_window.py::TestMainWindow::test_menu_bar_exists PASSED                                       [ 85%]
-tests/test_gui_main_window.py::TestMainWindow::test_toolbar_exists PASSED                                        [ 88%]
-tests/test_gui_main_window.py::TestMainWindow::test_status_bar_exists PASSED                                     [ 91%]
-tests/test_gui_main_window.py::TestMainWindow::test_company_selector_exists PASSED                               [ 94%]
-tests/test_gui_main_window.py::TestMainWindow::test_tab_switching PASSED                                         [ 97%]
-tests/test_gui_main_window.py::TestMainWindow::test_window_title_updates_with_company PASSED                     [100%]
+  × Building wheel for psycopg2-binary (pyproject.toml) did not run successfully.
+  │ exit code: 1
+  ╰─> [45 lines of output]
+      C:\Users\mishr\AppData\Local\Temp\pip-build-env-30_90r3l\overlay\Lib\site-packages\setuptools\dist.py:759: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+      !!
 
-========================================== 35 passed, 37 warnings in 15.04s ===========================================
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288917F6D40>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A23E0>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A24D0>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A1A80>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A18A0>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A0F40>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A25C0>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A1210>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
-C:\Users\mishr\AppData\Local\Programs\Python\Python313\Lib\site-packages\_pytest\unraisableexception.py:33: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x00000288A64A22F0>
-  gc.collect()
-ResourceWarning: Enable tracemalloc to get the object allocation traceback
+              ********************************************************************************
+              Please consider removing the following classifiers in favor of a SPDX license expression:
+
+              License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+
+              See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+              ********************************************************************************
+
+      !!
+        self._finalize_license_expression()
+      running bdist_wheel
+      running build
+      running build_py
+      creating build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\errorcodes.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\errors.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\extensions.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\extras.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\pool.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\sql.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\tz.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\_ipaddress.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\_json.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\_range.py -> build\lib.win-amd64-cpython-313\psycopg2
+      copying lib\__init__.py -> build\lib.win-amd64-cpython-313\psycopg2
+      running build_ext
+      building 'psycopg2._psycopg' extension
+      creating build\temp.win-amd64-cpython-313\Release\psycopg
+      "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX86\x64\cl.exe" /c /nologo /O2 /W3 /GL /DNDEBUG /MD "-DPSYCOPG_VERSION=2.9.9 (dt dec pq3 ext lo64)" -DPSYCOPG_DEBUG=1 -DPG_VERSION_NUM=160010 -DHAVE_LO64=1 -DPSYCOPG_DEBUG=1 -IC:\Users\mishr\AppData\Local\Programs\Python\Python313\include -IC:\Users\mishr\AppData\Local\Programs\Python\Python313\Include -I. -IC:/PROGRA~1/POSTGR~1/16/include -IC:/PROGRA~1/POSTGR~1/16/include/server "-IC:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\include" /Tcpsycopg\adapter_asis.c /Fobuild\temp.win-amd64-cpython-313\Release\psycopg\adapter_asis.obj
+      adapter_asis.c
+      C:\Users\mishr\AppData\Local\Programs\Python\Python313\include\pyconfig.h(59): fatal error C1083: Cannot open include file: 'io.h': No such file or directory
+
+      It appears you are missing some prerequisite to build the package from source.
+
+      You may install a binary package by installing 'psycopg2-binary' from PyPI.
+      If you want to install psycopg2 from source, please install the packages
+      required for the build and try again.
+
+      For further information please check the 'doc/src/install.rst' file (also at
+      <https://www.psycopg.org/docs/install.html>).
+
+      error: command 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX86\\x64\\cl.exe' failed with exit code 2
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for psycopg2-binary
+Failed to build psycopg2-binary
+error: failed-wheel-build-for-install
+
+× Failed to build installable wheels for some pyproject.toml based projects
+╰─> psycopg2-binary
+PS C:\Financials Automation_Github\deployment_package_v1.0_FINAL_BUGFIXED\deployment_package_v1.0_FINAL_BUGFIXED> python build_executable.py
+
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                ║
+║           FINANCIAL AUTOMATION APPLICATION - EXECUTABLE BUILDER                ║
+║                                                                                ║
+║                           Version 1.0.0                                        ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+
+🖥️  Platform: Windows (AMD64)
+🐍 Python: 3.13.9
+📦 Target: FinancialAutomation.exe
+✅ PyInstaller: 6.16.0
+
+================================================================================
+Building FinancialAutomation for Windows
+================================================================================
+
+✅ Created FinancialAutomation.spec
+
+📦 Running PyInstaller...
+Command: pyinstaller --clean --noconfirm FinancialAutomation.spec
+
+390 INFO: PyInstaller: 6.16.0, contrib hooks: 2025.9
+390 INFO: Python: 3.13.9
+414 INFO: Platform: Windows-11-10.0.22631-SP0
+414 INFO: Python environment: C:\Users\mishr\AppData\Local\Programs\Python\Python313
+417 INFO: Removing temporary files and cleaning cache in C:\Users\mishr\AppData\Local\pyinstaller
+430 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\mishr\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\pyinstaller.exe',
+ 'C:\\Users\\mishr\\AppData\\Local\\Programs\\Python\\Python313\\python313.zip',
+ 'C:\\Users\\mishr\\AppData\\Local\\Programs\\Python\\Python313\\DLLs',
+ 'C:\\Users\\mishr\\AppData\\Local\\Programs\\Python\\Python313\\Lib',
+ 'C:\\Users\\mishr\\AppData\\Local\\Programs\\Python\\Python313',
+ 'C:\\Users\\mishr\\AppData\\Roaming\\Python\\Python313\\site-packages',
+ 'C:\\Users\\mishr\\AppData\\Roaming\\Python\\Python313\\site-packages\\win32',
+ 'C:\\Users\\mishr\\AppData\\Roaming\\Python\\Python313\\site-packages\\win32\\lib',
+ 'C:\\Users\\mishr\\AppData\\Roaming\\Python\\Python313\\site-packages\\Pythonwin',
+ 'C:\\Users\\mishr\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages',
+ 'C:\\Users\\mishr\\AppData\\Roaming\\Python\\Python313\\site-packages\\setuptools\\_vendor',
+ 'C:\\Financials '
+ 'Automation_Github\\deployment_package_v1.0_FINAL_BUGFIXED\\deployment_package_v1.0_FINAL_BUGFIXED']
+1831 INFO: Appending 'datas' from .spec
+ERROR: Unable to find 'C:\\Financials Automation_Github\\deployment_package_v1.0_FINAL_BUGFIXED\\deployment_package_v1.0_FINAL_BUGFIXED\\resources' when adding binary and data files.
+
+================================================================================
+❌ BUILD FAILED
+================================================================================
+
+Common issues:
+   • PyInstaller not installed: pip install pyinstaller
+   • Missing dependencies: pip install -r requirements.txt
+   • Icon file missing: Create resources/icons/ directory
+PS C:\Financials Automation_Github\deployment_package_v1.0_FINAL_BUGFIXED\deployment_package_v1.0_FINAL_BUGFIXED>
