@@ -1,7 +1,7 @@
 # Quick Reference: All Bugs Found in SMBC-1
 
 **Date:** October 22, 2025  
-**Total Bugs:** 11  
+**Total Bugs:** 12  
 **Status:** Analysis Complete - No Code Changes Made
 
 ---
@@ -14,9 +14,10 @@
 | 2 | ppe.py | 202-215 | Mixed placeholders + `NOW()` in UPDATE | Change `?` to `%s`, replace `NOW()` with `%s` + `datetime.now()` |
 | 3 | cwip.py | 195-201 | Mixed `?` and `%s` placeholders in UPDATE | Change all `?` to `%s` |
 | 4 | investments.py | 232-240 | Mixed placeholders + `NOW()` in UPDATE | Change `?` to `%s`, replace `NOW()` with `%s` + `datetime.now()` |
+| 5 | trial_balance_mapping_dialog.py | 223, 231, 448, 507, 542 | Wrong `?` placeholders (should be `%s`) | Change all `?` to `%s` |
 
-**Time to Fix:** ~20 minutes  
-**Impact:** Application crashes on UPDATE operations
+**Time to Fix:** ~30 minutes  
+**Impact:** Application crashes on UPDATE operations, mapping dialog broken
 
 ---
 
@@ -24,10 +25,10 @@
 
 | # | File | Line | Issue | Quick Fix |
 |---|------|------|-------|-----------|
-| 5 | company_info.py | 182-194 | Missing RETURNING in INSERT | Add `RETURNING company_id` after VALUES |
-| 6 | ppe.py | 151-171 | Missing RETURNING in INSERT | Add `RETURNING ppe_id` after VALUES |
-| 7 | cwip.py | 154-168 | Missing RETURNING in INSERT | Add `RETURNING cwip_id` after VALUES |
-| 8 | investments.py | 188-204 | Missing RETURNING in INSERT | Add `RETURNING investment_id` after VALUES |
+| 6 | company_info.py | 182-194 | Missing RETURNING in INSERT | Add `RETURNING company_id` after VALUES |
+| 7 | ppe.py | 151-171 | Missing RETURNING in INSERT | Add `RETURNING ppe_id` after VALUES |
+| 8 | cwip.py | 154-168 | Missing RETURNING in INSERT | Add `RETURNING cwip_id` after VALUES |
+| 9 | investments.py | 188-204 | Missing RETURNING in INSERT | Add `RETURNING investment_id` after VALUES |
 
 **Time to Fix:** ~8 minutes  
 **Impact:** Cannot create new records
@@ -38,8 +39,8 @@
 
 | # | File | Issue | Time to Fix |
 |---|------|-------|-------------|
-| 9 | company_info.py | Improper connection cleanup in create() | 15 min |
-| 10 | Multiple files | Inconsistent connection management | 30 min |
+| 10 | company_info.py | Improper connection cleanup in create() | 15 min |
+| 11 | Multiple files | Inconsistent connection management | 30 min |
 
 **Impact:** Connection pool exhaustion over time
 
@@ -49,7 +50,7 @@
 
 | # | File | Issue | Time to Fix |
 |---|------|-------|-------------|
-| 11 | database.py | No migration system | 1-2 days |
+| 12 | database.py | No migration system | 1-2 days |
 
 **Impact:** Difficult to manage schema changes
 
@@ -58,14 +59,15 @@
 ## Files Requiring Fixes
 
 ### Immediate Attention Required:
-- ✅ `models/company_info.py` (3 bugs: #1, #5, #9)
-- ✅ `models/ppe.py` (2 bugs: #2, #6)
-- ✅ `models/cwip.py` (2 bugs: #3, #7)
-- ✅ `models/investments.py` (2 bugs: #4, #8)
+- ✅ `models/company_info.py` (3 bugs: #1, #6, #10)
+- ✅ `models/ppe.py` (2 bugs: #2, #7)
+- ✅ `models/cwip.py` (2 bugs: #3, #8)
+- ✅ `models/investments.py` (2 bugs: #4, #9)
+- ✅ `views/trial_balance_mapping_dialog.py` (1 bug: #5)
 
 ### Later:
-- ⬜ `config/database.py` (1 bug: #11)
-- ⬜ Multiple model files (Bug #10)
+- ⬜ `config/database.py` (1 bug: #12)
+- ⬜ Multiple model files (Bug #11)
 
 ---
 
@@ -116,21 +118,22 @@ After fixing bugs, test:
 - [ ] Update PPE entry (Bug #2)
 - [ ] Update CWIP project (Bug #3)
 - [ ] Update investment (Bug #4)
-- [ ] Create new company (Bug #5)
-- [ ] Create new PPE entry (Bug #6)
-- [ ] Create new CWIP project (Bug #7)
-- [ ] Create new investment (Bug #8)
-- [ ] Connection cleanup under errors (Bug #9-10)
+- [ ] Map trial balance ledgers (Bug #5)
+- [ ] Create new company (Bug #6)
+- [ ] Create new PPE entry (Bug #7)
+- [ ] Create new CWIP project (Bug #8)
+- [ ] Create new investment (Bug #9)
+- [ ] Connection cleanup under errors (Bug #10-11)
 
 ---
 
 ## Priority Order for Fixes
 
-1. **Day 1:** Fix Bugs #1-4 (Critical - Mixed Placeholders)
-2. **Day 1:** Fix Bugs #5-8 (High - Missing RETURNING)
+1. **Day 1:** Fix Bugs #1-5 (Critical - Placeholder Issues)
+2. **Day 1:** Fix Bugs #6-9 (High - Missing RETURNING)
 3. **Day 2-3:** Add unit tests
-4. **Week 2:** Fix Bugs #9-10 (Connection Management)
-5. **Next Sprint:** Bug #11 (Migration System)
+4. **Week 2:** Fix Bugs #10-11 (Connection Management)
+5. **Next Sprint:** Bug #12 (Migration System)
 
 ---
 
@@ -143,11 +146,11 @@ After fixing bugs, test:
 - ✅ Deprecated method warnings
 
 ### New Bugs Found (This Report):
-- 🆕 4 CRITICAL bugs (mixed placeholders in other files)
-- 🆕 4 HIGH bugs (missing RETURNING in other files)
+- 🆕 5 CRITICAL bugs (placeholder issues in models and views)
+- 🆕 4 HIGH bugs (missing RETURNING in models)
 - 🆕 2 MEDIUM bugs (connection management)
 
-**Total New Bugs Discovered:** 10
+**Total New Bugs Discovered:** 11
 
 ---
 

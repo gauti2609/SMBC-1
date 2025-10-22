@@ -10,8 +10,8 @@ This report documents **ALL bugs** identified in the Python codebase of the SMBC
 
 ## Overview Statistics
 
-- **Total Bugs Found:** 11
-- **Critical Severity:** 4 bugs
+- **Total Bugs Found:** 12
+- **Critical Severity:** 5 bugs
 - **High Severity:** 4 bugs  
 - **Medium Severity:** 2 bugs
 - **Low Severity:** 1 bug
@@ -170,9 +170,55 @@ cursor.execute('''
 
 ---
 
+### Bug #5: SQL Placeholders in trial_balance_mapping_dialog.py
+**File:** `FinancialAutomation/views/trial_balance_mapping_dialog.py`  
+**Lines:** 223, 231, 448, 507, 542  
+**Severity:** CRITICAL  
+
+**Description:**  
+The trial balance mapping dialog uses `?` (SQLite style) placeholders instead of `%s` (PostgreSQL style) in multiple SQL queries. Also uses `CURRENT_TIMESTAMP` which should be consistent with Python datetime handling.
+
+**Current Code (Multiple Locations):**
+```python
+# Line 223 & 231 - SELECT queries
+cursor.execute('''
+    SELECT tb_id, ledger_name, type_bs_pl, closing_balance_cy,
+           major_head_id, minor_head_id, grouping_id, is_mapped
+    FROM trial_balance
+    WHERE company_id = ?
+    ORDER BY ledger_name
+''', (self.company_id,))
+
+# Lines 448, 507, 542 - UPDATE queries
+cursor.execute('''
+    UPDATE trial_balance
+    SET major_head_id = ?,
+        minor_head_id = ?,
+        grouping_id = ?,
+        is_mapped = 1,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE tb_id = ?
+''', (...))
+```
+
+**Issues:**  
+1. Using `?` placeholders instead of `%s` for PostgreSQL
+2. Multiple occurrences throughout the file
+3. `CURRENT_TIMESTAMP` is acceptable in PostgreSQL but inconsistent with model layer using `datetime.now()`
+
+**Impact:**  
+- Mapping dialog completely non-functional
+- Cannot map trial balance ledgers to chart of accounts
+- Critical business functionality broken
+
+**Fix Required:**  
+Change all `?` placeholders to `%s` throughout the file.
+
+---
+
 ## HIGH PRIORITY BUGS
 
-### Bug #5: Missing RETURNING Clause in company_info.py CREATE Method
+### Bug #6: Missing RETURNING Clause in company_info.py CREATE Method
 **File:** `FinancialAutomation/models/company_info.py`  
 **Lines:** 182-194  
 **Severity:** HIGH  
@@ -207,7 +253,7 @@ Add `RETURNING company_id` to the INSERT statement.
 
 ---
 
-### Bug #6: Missing RETURNING Clause in ppe.py CREATE Method
+### Bug #7: Missing RETURNING Clause in ppe.py CREATE Method
 **File:** `FinancialAutomation/models/ppe.py`  
 **Lines:** 151-171  
 **Severity:** HIGH  
@@ -234,7 +280,7 @@ Add `RETURNING ppe_id` to the INSERT statement.
 
 ---
 
-### Bug #7: Missing RETURNING Clause in cwip.py CREATE Method
+### Bug #8: Missing RETURNING Clause in cwip.py CREATE Method
 **File:** `FinancialAutomation/models/cwip.py`  
 **Lines:** 154-168  
 **Severity:** HIGH  
@@ -261,7 +307,7 @@ Add `RETURNING cwip_id` to the INSERT statement.
 
 ---
 
-### Bug #8: Missing RETURNING Clause in investments.py CREATE Method
+### Bug #9: Missing RETURNING Clause in investments.py CREATE Method
 **File:** `FinancialAutomation/models/investments.py`  
 **Lines:** 188-204  
 **Severity:** HIGH  
@@ -290,7 +336,7 @@ Add `RETURNING investment_id` to the INSERT statement.
 
 ## MEDIUM PRIORITY BUGS
 
-### Bug #9: Improper Connection Cleanup in company_info.py CREATE Method
+### Bug #10: Improper Connection Cleanup in company_info.py CREATE Method
 **File:** `FinancialAutomation/models/company_info.py`  
 **Lines:** 165-201  
 **Severity:** MEDIUM  
@@ -330,7 +376,7 @@ Use `try-except-finally` pattern with proper rollback and connection cleanup.
 
 ---
 
-### Bug #10: Improper Connection Cleanup in Multiple Model Files
+### Bug #11: Improper Connection Cleanup in Multiple Model Files
 **File:** `FinancialAutomation/models/ppe.py`, `cwip.py`, `investments.py`  
 **Lines:** Various in CREATE and UPDATE methods  
 **Severity:** MEDIUM  
@@ -349,7 +395,7 @@ Standardize connection management across all models with proper `try-except-fina
 
 ## LOW PRIORITY / CODE QUALITY ISSUES
 
-### Bug #11: No Database Schema Migration System
+### Bug #12: No Database Schema Migration System
 **File:** `FinancialAutomation/config/database.py`  
 **Lines:** Throughout the file  
 **Severity:** LOW  
@@ -380,13 +426,14 @@ Implement a database migration system (e.g., Alembic for Python) to manage schem
 | 2 | ppe.py | update() | CRITICAL | Mixed placeholders + NOW() | Cannot update PPE |
 | 3 | cwip.py | update() | CRITICAL | Mixed SQL placeholders | Cannot update CWIP |
 | 4 | investments.py | update() | CRITICAL | Mixed placeholders + NOW() | Cannot update investments |
-| 5 | company_info.py | create() | HIGH | Missing RETURNING | Cannot create companies |
-| 6 | ppe.py | create() | HIGH | Missing RETURNING | Cannot create PPE |
-| 7 | cwip.py | create() | HIGH | Missing RETURNING | Cannot create CWIP |
-| 8 | investments.py | create() | HIGH | Missing RETURNING | Cannot create investments |
-| 9 | company_info.py | create() | MEDIUM | Connection management | Connection leaks |
-| 10 | Multiple files | Various | MEDIUM | Connection management | Connection leaks |
-| 11 | database.py | initialize_database() | LOW | No migrations | Schema drift |
+| 5 | trial_balance_mapping_dialog.py | Multiple methods | CRITICAL | Wrong SQL placeholders | Mapping dialog broken |
+| 6 | company_info.py | create() | HIGH | Missing RETURNING | Cannot create companies |
+| 7 | ppe.py | create() | HIGH | Missing RETURNING | Cannot create PPE |
+| 8 | cwip.py | create() | HIGH | Missing RETURNING | Cannot create CWIP |
+| 9 | investments.py | create() | HIGH | Missing RETURNING | Cannot create investments |
+| 10 | company_info.py | create() | MEDIUM | Connection management | Connection leaks |
+| 11 | Multiple files | Various | MEDIUM | Connection management | Connection leaks |
+| 12 | database.py | initialize_database() | LOW | No migrations | Schema drift |
 
 ---
 
@@ -397,21 +444,22 @@ Implement a database migration system (e.g., Alembic for Python) to manage schem
 2. `models/ppe.py` - 2 bugs (1 CRITICAL, 1 HIGH)
 3. `models/cwip.py` - 2 bugs (1 CRITICAL, 1 HIGH)
 4. `models/investments.py` - 2 bugs (1 CRITICAL, 1 HIGH)
+5. `views/trial_balance_mapping_dialog.py` - 1 bug (CRITICAL)
 
 ### Other Files:
-5. `config/database.py` - 1 bug (LOW)
-6. Multiple model files - Connection management issues (MEDIUM)
+6. `config/database.py` - 1 bug (LOW)
+7. Multiple model files - Connection management issues (MEDIUM)
 
 ---
 
 ## Bug Categories
 
-### Database Issues: 10 bugs (91%)
-- SQL syntax errors (mixed placeholders): 4 bugs
+### Database Issues: 11 bugs (92%)
+- SQL syntax errors (mixed/wrong placeholders): 5 bugs
 - Missing RETURNING clauses: 4 bugs
 - Connection management: 2 bugs
 
-### Code Quality: 1 bug (9%)
+### Code Quality: 1 bug (8%)
 - Missing migration system: 1 bug
 
 ---
@@ -423,25 +471,26 @@ Implement a database migration system (e.g., Alembic for Python) to manage schem
 2. ✅ Bug #2: Fix mixed placeholders + NOW() in ppe.py UPDATE (5 minutes)
 3. ✅ Bug #3: Fix mixed placeholders in cwip.py UPDATE (5 minutes)
 4. ✅ Bug #4: Fix mixed placeholders + NOW() in investments.py UPDATE (5 minutes)
+5. ✅ Bug #5: Fix wrong placeholders in trial_balance_mapping_dialog.py (10 minutes)
 
-**Total Time: ~20 minutes**
+**Total Time: ~30 minutes**
 
 ### SHOULD FIX THIS WEEK (High Priority):
-5. ✅ Bug #5: Add RETURNING to company_info.py CREATE (2 minutes)
-6. ✅ Bug #6: Add RETURNING to ppe.py CREATE (2 minutes)
-7. ✅ Bug #7: Add RETURNING to cwip.py CREATE (2 minutes)
-8. ✅ Bug #8: Add RETURNING to investments.py CREATE (2 minutes)
+6. ✅ Bug #6: Add RETURNING to company_info.py CREATE (2 minutes)
+7. ✅ Bug #7: Add RETURNING to ppe.py CREATE (2 minutes)
+8. ✅ Bug #8: Add RETURNING to cwip.py CREATE (2 minutes)
+9. ✅ Bug #9: Add RETURNING to investments.py CREATE (2 minutes)
 
 **Total Time: ~8 minutes**
 
 ### PLAN FOR NEXT SPRINT (Medium Priority):
-9. ⬜ Bug #9: Fix connection management in company_info.py (15 minutes)
-10. ⬜ Bug #10: Standardize connection management across all models (30 minutes)
+10. ⬜ Bug #10: Fix connection management in company_info.py (15 minutes)
+11. ⬜ Bug #11: Standardize connection management across all models (30 minutes)
 
 **Total Time: ~45 minutes**
 
 ### LONG-TERM (Low Priority):
-11. ⬜ Bug #11: Implement database migration system (1-2 days)
+12. ⬜ Bug #12: Implement database migration system (1-2 days)
 
 ---
 
@@ -449,11 +498,11 @@ Implement a database migration system (e.g., Alembic for Python) to manage schem
 
 ### Current Status: 🔴 NOT PRODUCTION READY
 
-**Reason:** Critical bugs #1-4 will cause immediate application failures for any UPDATE operations on major data models.
+**Reason:** Critical bugs #1-5 will cause immediate application failures for UPDATE operations and the mapping dialog is completely broken.
 
 ### After Fixing Critical Bugs: 🟡 PROCEED WITH CAUTION
 
-**Reason:** High priority bugs #5-8 will prevent creation of new records, limiting functionality.
+**Reason:** High priority bugs #6-9 will prevent creation of new records, limiting functionality.
 
 ### After Fixing All Critical + High Bugs: 🟢 PRODUCTION READY (with monitoring)
 
@@ -470,13 +519,13 @@ Implement a database migration system (e.g., Alembic for Python) to manage schem
    - After fix, verify updates work correctly
 
 ### High Priority Bug Verification:
-2. **Bug #5-8 (Missing RETURNING):**
+2. **Bug #6-9 (Missing RETURNING):**
    - Try to create new company, PPE, CWIP, and investment records
    - Verify "no results to fetch" error occurs
    - After fix, verify creation works and returns proper ID
 
 ### Medium Priority Bug Verification:
-3. **Bug #9-10 (Connection Management):**
+3. **Bug #10-11 (Connection Management):**
    - Run stress test creating many records with intentional errors
    - Monitor database connection pool
    - Verify connections are properly released
@@ -490,10 +539,10 @@ Implement a database migration system (e.g., Alembic for Python) to manage schem
 
 ## Code Quality Metrics
 
-- **Lines of Code Analyzed:** 4,745 (model files only)
-- **Files Analyzed:** 13 Python model files
-- **Bug Density:** 2.3 bugs per 1000 lines
-- **Critical Bug Rate:** 0.84 per 1000 lines
+- **Lines of Code Analyzed:** 5,377 (model files + view files)
+- **Files Analyzed:** 14 Python files (13 models + 1 view)
+- **Bug Density:** 2.2 bugs per 1000 lines
+- **Critical Bug Rate:** 0.93 per 1000 lines
 
 **Python Code Quality:** ⭐⭐⭐☆☆ (3/5)
 - **Pros:** Good structure, consistent patterns, uses ORM-style patterns
@@ -512,11 +561,11 @@ The previous bug reports (BUG_REPORT.md, BUGS_OVERVIEW.txt) identified 6 bugs, o
 - ⚠️ Bug #6 (Database migration system) - **STILL PRESENT** (Bug #11 in this report)
 
 ### New Bugs Found (Not in Previous Report):
-- Bug #1-4: Mixed placeholders in company_info.py, ppe.py, cwip.py, investments.py
-- Bug #5-8: Missing RETURNING clauses in company_info.py, ppe.py, cwip.py, investments.py
-- Bug #9-10: Connection management issues in multiple files
+- Bug #1-5: Mixed/wrong placeholders in company_info.py, ppe.py, cwip.py, investments.py, trial_balance_mapping_dialog.py
+- Bug #6-9: Missing RETURNING clauses in company_info.py, ppe.py, cwip.py, investments.py
+- Bug #10-11: Connection management issues in multiple files
 
-**Total New Bugs:** 10
+**Total New Bugs:** 11
 **Previously Fixed Bugs:** 4
 **Still Pending Bugs:** 2 (from previous report)
 
@@ -525,7 +574,7 @@ The previous bug reports (BUG_REPORT.md, BUGS_OVERVIEW.txt) identified 6 bugs, o
 ## Recommendations
 
 ### Immediate Actions (Within 24 Hours):
-1. Fix all 4 CRITICAL bugs (mixed placeholders) - **Priority 1**
+1. Fix all 5 CRITICAL bugs (mixed/wrong placeholders) - **Priority 1**
 2. Fix all 4 HIGH bugs (missing RETURNING) - **Priority 2**
 3. Add unit tests for CREATE and UPDATE operations - **Priority 3**
 
@@ -558,8 +607,9 @@ The previous bug reports (BUG_REPORT.md, BUGS_OVERVIEW.txt) identified 6 bugs, o
 ### Current Risk Level: 🔴 HIGH
 
 **Reasons:**
-- 4 CRITICAL bugs that will cause immediate failures
+- 5 CRITICAL bugs that will cause immediate failures
 - 4 HIGH priority bugs preventing core functionality
+- Trial balance mapping dialog completely broken
 - No test coverage to prevent regression
 
 ### Risk After Fixes: 🟡 MEDIUM
@@ -591,7 +641,7 @@ For questions about this bug analysis:
 **Repository:** gauti2609/SMBC-1  
 **Analysis Scope:** All Python files in FinancialAutomation/ directory  
 **Files Excluded:** VBA_Module1.bas (reference file only), deployment packages, venv  
-**Total Bugs Found:** 11  
+**Total Bugs Found:** 12  
 **Status:** Analysis Complete - No Code Changes Made (As Requested)
 
 ---
