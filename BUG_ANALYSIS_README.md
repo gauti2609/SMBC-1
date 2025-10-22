@@ -1,6 +1,8 @@
 # Bug Analysis Documentation
 
-This directory contains comprehensive bug analysis for the SMBC-1 repository.
+This directory contains comprehensive bug analysis for the SMBC-1 repository Python code.
+
+**Note:** VBA_Module1.bas was excluded from this analysis as it is a reference file, not part of the active codebase.
 
 ## 📚 Documentation Files
 
@@ -75,17 +77,17 @@ cursor.execute('''
 
 | Severity | Count | % of Total |
 |----------|-------|------------|
-| Critical | 1 | 7% |
-| High | 3 | 20% |
-| Medium | 6 | 40% |
-| Low | 5 | 33% |
-| **Total** | **15** | **100%** |
+| Critical | 1 | 17% |
+| High | 3 | 50% |
+| Medium | 2 | 33% |
+| Low | 1 | 17% |
+| **Total** | **6** | **100%** |
 
 ---
 
 ## 📁 Files Analyzed
 
-### Python Files (8 files)
+### Python Files (9 files)
 - `main.py`
 - `config/database.py`
 - `config/db_connection.py`
@@ -94,9 +96,9 @@ cursor.execute('''
 - `models/master_data.py` ⚠️ (2 bugs)
 - `views/login_window.py`
 - `views/main_window.py`
+- `controllers/auth_controller.py`
 
-### VBA Files (1 file)
-- `VBA_Module1.bas` ⚠️ (9 bugs - most issues)
+**Note:** VBA_Module1.bas excluded from analysis (reference file only)
 
 ---
 
@@ -141,8 +143,8 @@ After fixing critical and high-priority bugs:
 - [ ] Add unit tests for database layer - 4 hours
 
 **Next Sprint:**
-- [ ] Fix Bugs #4-7 (Medium priority) - 2 hours
-- [ ] Refactor VBA code - 4 hours
+- [ ] Fix Bugs #4-5 (Medium priority) - 20 minutes
+- [ ] Implement database migration system - 1 day
 - [ ] Implement error handling improvements - ongoing
 
 ---
@@ -187,7 +189,9 @@ If you have questions about:
 
 ---
 
-**Analysis Date:** October 21, 2025  
+**Analysis Date:** October 22, 2025  
 **Repository:** gauti2609/SMBC-1  
-**Files Analyzed:** 10 files, 5000+ lines of code  
-**Bugs Found:** 15 bugs across all severity levels
+**Files Analyzed:** 9 Python files, 4000+ lines of code  
+**Bugs Found:** 6 bugs across all severity levels
+
+**Note:** VBA_Module1.bas excluded from analysis as it is a reference file.

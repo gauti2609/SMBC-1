@@ -1,7 +1,9 @@
 # Bug Report for SMBC-1 Repository
 
 ## Executive Summary
-This document lists all identified bugs found in the repository code during analysis. The bugs are categorized by severity and file location.
+This document lists all identified bugs found in the Python code within the FinancialAutomation module. The bugs are categorized by severity and file location.
+
+**Note:** VBA_Module1.bas was excluded from this analysis as it is a reference file, not part of the active codebase.
 
 ---
 
@@ -220,52 +222,7 @@ ws.Range("D9").Formula = "=B9*C3"
 
 ## Low Priority Bugs / Code Quality Issues
 
-### 8. Redundant Code in Aging Schedules
-**File:** `VBA_Module1.bas`  
-**Lines:** 500-590  
-**Severity:** LOW  
-
-**Description:**  
-The `Generate_Aging_Schedules_Layout` subroutine has highly repetitive code for creating receivables and payables aging schedules.
-
-**Issue:**  
-- Almost identical code blocks for receivables and payables
-- Should be refactored into a helper function
-- Violates DRY (Don't Repeat Yourself) principle
-
-**Impact:**  
-- Maintenance burden (changes must be made in multiple places)
-- Higher chance of introducing inconsistencies
-
----
-
-### 9. Hardcoded Column Width
-**File:** `VBA_Module1.bas`  
-**Lines:** 970, 1652, 1676  
-**Severity:** LOW  
-
-**Description:**  
-Multiple instances of hardcoded column widths that may not work for all screen resolutions or data.
-
-**Current Code:**
-```vba
-ws.Columns("A").ColumnWidth = 120  ' Line 970
-ws.Columns("A").ColumnWidth = 60   ' Line 1652
-ws.Columns("A").ColumnWidth = 50   ' Line 1676
-```
-
-**Issue:**  
-- Hardcoded values don't adapt to content
-- May cause text truncation or excessive whitespace
-- Should use AutoFit where possible
-
-**Impact:**  
-- Poor user experience with ill-formatted sheets
-- Text may be cut off or too compressed
-
----
-
-### 10. Missing Input Validation in Database Initialization
+### 6. Missing Input Validation in Database Initialization
 **File:** `FinancialAutomation/config/database.py`  
 **Lines:** 5-418  
 **Severity:** LOW  
@@ -284,142 +241,13 @@ The `initialize_database()` function doesn't check if tables already exist befor
 
 ---
 
-### 11. Global Debug Flag Always True
-**File:** `VBA_Module1.bas`  
-**Line:** 17  
-**Severity:** LOW  
-
-**Description:**  
-The global debug mode is hardcoded to True.
-
-**Current Code:**
-```vba
-Public Const g_DebugMode As Boolean = True
-```
-
-**Issue:**  
-- Debug mode should be configurable
-- Production code should have debug mode disabled
-- Constant declaration prevents runtime changes
-
-**Impact:**  
-- Performance overhead from debug logging in production
-- Verbose output may confuse end users
-
----
-
-### 12. Incomplete Error Recovery in Button Creation
-**File:** `VBA_Module1.bas`  
-**Lines:** 42-73, 82-107  
-**Severity:** LOW  
-
-**Description:**  
-Button creation functions exit silently when worksheet is Nothing without proper error notification.
-
-**Current Code:**
-```vba
-If ws Is Nothing Then
-    Debug.Print "  -> FAILED: Create_Control_Button - Worksheet object not provided."
-    MsgBox "Create_Control_Button failed: The control sheet object was not provided.", vbCritical
-    Exit Sub
-End If
-```
-
-vs.
-
-```vba
-If ws Is Nothing Then Exit Sub  ' Line 86 - no error message
-```
-
-**Issue:**  
-- Inconsistent error handling between similar functions
-- `Create_Validation_Button` fails silently when ws is Nothing
-- Debug.Print output not visible to end users
-
-**Impact:**  
-- Difficult to debug when buttons fail to create
-- Inconsistent user experience
-
----
-
-### 13. Potential Memory Leak with Dictionary Objects
-**File:** `VBA_Module1.bas`  
-**Lines:** 936-948  
-**Severity:** LOW  
-
-**Description:**  
-Dictionary objects are created but never explicitly destroyed.
-
-**Current Code:**
-```vba
-Dim policies As Object: Set policies = CreateObject("Scripting.Dictionary")
-' ... use dictionary ...
-Exit Sub  ' Dictionary not set to Nothing
-```
-
-**Issue:**  
-- VBA should auto-cleanup but explicit cleanup is best practice
-- Large dictionaries may cause memory issues
-- Should use `Set policies = Nothing` before exit
-
-**Impact:**  
-- Minor memory overhead
-- Potential performance degradation over long sessions
-
----
-
-### 14. No Input Validation in Note Creation
-**File:** `VBA_Module1.bas`  
-**Lines:** 650-696  
-**Severity:** LOW  
-
-**Description:**  
-The `Create_PPE_Note` function doesn't validate that the Input_PPE_Schedule sheet has valid data.
-
-**Issue:**  
-- No check if lastPPERow > 2 has actual data
-- May create empty notes
-- No validation of formula references
-
-**Impact:**  
-- Empty or malformed notes in financial statements
-- Unprofessional output
-
----
-
-### 15. Ambiguous Variable Names
-**File:** `VBA_Module1.bas`  
-**Multiple locations**  
-**Severity:** LOW  
-
-**Description:**  
-Many variables use ambiguous single-letter names that reduce code readability.
-
-**Examples:**
-```vba
-Dim r As Long       ' Used for row counter
-Dim i As Long       ' Used for iteration
-Dim ws As Worksheet ' Generic worksheet reference
-```
-
-**Issue:**  
-- Single-letter variables make code harder to understand
-- `r` could mean row, result, rate, etc.
-- Reduces maintainability
-
-**Impact:**  
-- Increased time to understand code
-- Higher chance of introducing bugs during maintenance
-
----
-
 ## Summary Statistics
 
-- **Total Bugs Found:** 15
+- **Total Bugs Found:** 6
 - **Critical:** 1
 - **High Priority:** 3
-- **Medium Priority:** 6
-- **Low Priority:** 5
+- **Medium Priority:** 2
+- **Low Priority:** 1
 
 ## Recommendations
 
@@ -431,15 +259,13 @@ Dim ws As Worksheet ' Generic worksheet reference
 ### Short-term Improvements:
 1. Fix constructor parameter issues in master_data.py (Bug #4)
 2. Add proper deprecation warnings or remove deprecated methods (Bug #5)
-3. Add input validation to all VBA functions (Bugs #6, #7, #14)
+3. Implement database migration system (Bug #6)
 
 ### Long-term Code Quality:
-1. Refactor repetitive VBA code (Bug #8)
-2. Implement proper configuration management (Bug #11)
-3. Add comprehensive input validation throughout
-4. Implement database migrations system (Bug #10)
-5. Improve variable naming conventions (Bug #15)
-6. Add unit tests to catch these types of bugs early
+1. Add comprehensive input validation throughout
+2. Implement database migrations system
+3. Add unit tests to catch these types of bugs early
+4. Implement proper error handling with context managers
 
 ---
 
@@ -451,10 +277,11 @@ To verify these bugs:
 2. **Bug #2 (INSERT RETURNING):** Try to create a new trial balance entry and observe error
 3. **Bug #3 (Connection Leak):** Run stress test creating many trial balance entries and monitor connection pool
 4. **Bug #4 (Constructor):** Call `MajorHead.get_by_name()` and try to use the returned object
-5. **VBA Bugs:** Run the VBA macros and check for #REF! errors or empty cells
+5. **Bug #5 (Deprecated Method):** Call `MajorHead.get_all()` and verify behavior
+6. **Bug #6 (Database Validation):** Modify database schema and verify migration handling
 
 ---
 
-**Report Generated:** October 21, 2025  
+**Report Generated:** October 22, 2025  
 **Repository:** gauti2609/SMBC-1  
-**Analysis Scope:** Python files in FinancialAutomation/ and VBA_Module1.bas
+**Analysis Scope:** Python files in FinancialAutomation/ directory only
