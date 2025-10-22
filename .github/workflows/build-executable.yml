@@ -1,0 +1,93 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ main, copilot/** ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        cd FinancialAutomation
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+        
+    - name: Create resources directory
+      run: |
+        cd FinancialAutomation
+        if not exist resources\icons mkdir resources\icons
+      shell: cmd
+        
+    - name: Build executable
+      run: |
+        cd FinancialAutomation
+        python build_executable.py
+      shell: cmd
+      
+    - name: Upload executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: FinancialAutomation-Windows
+        path: FinancialAutomation/dist/FinancialAutomation.exe
+        retention-days: 30
+        
+    - name: Create distribution package
+      run: |
+        cd FinancialAutomation
+        mkdir -p distribution/FinancialAutomation_Windows
+        copy dist\FinancialAutomation.exe distribution\FinancialAutomation_Windows\
+        if exist USER_GUIDE.md copy USER_GUIDE.md distribution\FinancialAutomation_Windows\
+        if exist 00_START_HERE.md copy 00_START_HERE.md distribution\FinancialAutomation_Windows\
+        if exist README.md copy README.md distribution\FinancialAutomation_Windows\
+      shell: cmd
+      
+    - name: Create README for package
+      run: |
+        cd FinancialAutomation/distribution/FinancialAutomation_Windows
+        echo Financial Automation Application > README.txt
+        echo ================================ >> README.txt
+        echo. >> README.txt
+        echo QUICK START: >> README.txt
+        echo 1. Run FinancialAutomation.exe >> README.txt
+        echo 2. Create admin user on first launch >> README.txt
+        echo 3. Read USER_GUIDE.md for complete instructions >> README.txt
+        echo. >> README.txt
+        echo Version: 1.0.0 >> README.txt
+        echo Built: %date% %time% >> README.txt
+      shell: cmd
+      
+    - name: Create ZIP package
+      run: |
+        cd FinancialAutomation/distribution
+        powershell Compress-Archive -Path FinancialAutomation_Windows -DestinationPath FinancialAutomation_Windows.zip -Force
+        
+    - name: Upload distribution package
+      uses: actions/upload-artifact@v4
+      with:
+        name: FinancialAutomation-Windows-Package
+        path: FinancialAutomation/distribution/FinancialAutomation_Windows.zip
+        retention-days: 30
+        
+    - name: Display build info
+      run: |
+        echo "Build completed successfully!"
+        echo "Executable location: FinancialAutomation/dist/FinancialAutomation.exe"
+        if exist FinancialAutomation\dist\FinancialAutomation.exe (
+          for %%A in (FinancialAutomation\dist\FinancialAutomation.exe) do echo "Size: %%~zA bytes"
+        )
+      shell: cmd

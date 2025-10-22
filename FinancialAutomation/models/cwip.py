@@ -158,6 +158,7 @@ class CWIP:
                 opening_balance_py, additions_py, capitalized_py, closing_balance_py,
                 project_start_date, expected_completion_date
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING cwip_id
         ''', (
             company_id, project_name,
             opening_balance_cy, additions_cy, capitalized_cy, closing_balance_cy,
@@ -194,10 +195,10 @@ class CWIP:
         
         cursor.execute('''
             UPDATE cwip_schedule
-            SET project_name = ?,
-                opening_balance_cy = ?, additions_cy = ?, capitalized_cy = ?, closing_balance_cy = ?,
-                opening_balance_py = ?, additions_py = ?, capitalized_py = ?, closing_balance_py = ?,
-                project_start_date = ?, expected_completion_date = ?
+            SET project_name = %s,
+                opening_balance_cy = %s, additions_cy = %s, capitalized_cy = %s, closing_balance_cy = %s,
+                opening_balance_py = %s, additions_py = %s, capitalized_py = %s, closing_balance_py = %s,
+                project_start_date = %s, expected_completion_date = %s
             WHERE cwip_id = %s
         ''', (
             project_name,

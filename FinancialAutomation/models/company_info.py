@@ -186,6 +186,7 @@ class CompanyInfo:
                     default_font_size, show_zeros_as_blank, decimal_places, turnover, 
                     rounding_level, created_at, updated_at
                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING company_id
             ''', (user_id, entity_name, address, cin_no, fy_start_date, fy_end_date,
                   currency, units, number_format, negative_format, default_font,
                   default_font_size, show_zeros_as_blank, decimal_places, turnover,
@@ -226,10 +227,10 @@ class CompanyInfo:
             
             cursor.execute('''
                 UPDATE company_info
-                SET entity_name = ?, address = ?, cin_no = ?, fy_start_date = ?,
-                    fy_end_date = ?, currency = ?, units = ?, number_format = ?,
-                    negative_format = ?, default_font = ?, default_font_size = ?,
-                    show_zeros_as_blank = ?, decimal_places = ?, turnover = ?,
+                SET entity_name = %s, address = %s, cin_no = %s, fy_start_date = %s,
+                    fy_end_date = %s, currency = %s, units = %s, number_format = %s,
+                    negative_format = %s, default_font = %s, default_font_size = %s,
+                    show_zeros_as_blank = %s, decimal_places = %s, turnover = %s,
                     rounding_level = %s, updated_at = %s
                 WHERE company_id = %s
             ''', (entity_name, address, cin_no, fy_start_date, fy_end_date,

@@ -4,6 +4,7 @@ Tracks investments in subsidiaries, associates, equity, debt instruments
 Classification: Non-Current (Notes 3, 4) and Current (Notes 13, 14)
 """
 from typing import List, Optional, Dict, Any
+from datetime import datetime
 from config.database import get_connection
 
 
@@ -193,6 +194,7 @@ class Investment:
                 carrying_amount_cy, carrying_amount_py,
                 market_value_cy, market_value_py
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING investment_id
         ''', (
             company_id, investment_particulars, classification, investment_type,
             is_quoted, quantity_cy, quantity_py,
@@ -231,12 +233,12 @@ class Investment:
         
         cursor.execute('''
             UPDATE investments
-            SET investment_particulars = ?, classification = ?, investment_type = ?,
-                is_quoted = ?, quantity_cy = ?, quantity_py = ?,
-                cost_cy = ?, cost_py = ?, fair_value_cy = ?, fair_value_py = ?,
-                carrying_amount_cy = ?, carrying_amount_py = ?,
-                market_value_cy = ?, market_value_py = ?,
-                updated_at = NOW()
+            SET investment_particulars = %s, classification = %s, investment_type = %s,
+                is_quoted = %s, quantity_cy = %s, quantity_py = %s,
+                cost_cy = %s, cost_py = %s, fair_value_cy = %s, fair_value_py = %s,
+                carrying_amount_cy = %s, carrying_amount_py = %s,
+                market_value_cy = %s, market_value_py = %s,
+                updated_at = %s
             WHERE investment_id = %s
         ''', (
             investment_particulars, classification, investment_type,
@@ -244,6 +246,7 @@ class Investment:
             cost_cy, cost_py, fair_value_cy, fair_value_py,
             carrying_amount_cy, carrying_amount_py,
             market_value_cy, market_value_py,
+            datetime.now(),
             investment_id
         ))
         

@@ -220,7 +220,7 @@ class TrialBalanceMappingDialog(QDialog):
                     SELECT tb_id, ledger_name, type_bs_pl, closing_balance_cy,
                            major_head_id, minor_head_id, grouping_id, is_mapped
                     FROM trial_balance
-                    WHERE company_id = ?
+                    WHERE company_id = %s
                     ORDER BY ledger_name
                 ''', (self.company_id,))
             else:
@@ -228,7 +228,7 @@ class TrialBalanceMappingDialog(QDialog):
                     SELECT tb_id, ledger_name, type_bs_pl, closing_balance_cy,
                            major_head_id, minor_head_id, grouping_id, is_mapped
                     FROM trial_balance
-                    WHERE company_id = ? AND is_mapped = 0
+                    WHERE company_id = %s AND is_mapped = 0
                     ORDER BY ledger_name
                 ''', (self.company_id,))
             
@@ -445,12 +445,12 @@ class TrialBalanceMappingDialog(QDialog):
             for tb_id in checked_tb_ids:
                 cursor.execute('''
                     UPDATE trial_balance
-                    SET major_head_id = ?,
-                        minor_head_id = ?,
-                        grouping_id = ?,
+                    SET major_head_id = %s,
+                        minor_head_id = %s,
+                        grouping_id = %s,
                         is_mapped = 1,
                         updated_at = CURRENT_TIMESTAMP
-                    WHERE tb_id = ?
+                    WHERE tb_id = %s
                 ''', (mapping_data["major_id"], mapping_data["minor_id"], 
                       mapping_data["grouping_id"], tb_id))
             
@@ -504,7 +504,7 @@ class TrialBalanceMappingDialog(QDialog):
                         grouping_id = NULL,
                         is_mapped = 0,
                         updated_at = CURRENT_TIMESTAMP
-                    WHERE tb_id = ?
+                    WHERE tb_id = %s
                 ''', (tb_id,))
             
             conn.commit()
@@ -539,7 +539,7 @@ class TrialBalanceMappingDialog(QDialog):
                     grouping_id = NULL,
                     is_mapped = 0,
                     updated_at = CURRENT_TIMESTAMP
-                WHERE company_id = ?
+                WHERE company_id = %s
             ''', (self.company_id,))
             
             conn.commit()

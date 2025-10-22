@@ -159,6 +159,7 @@ class PPE:
                     acc_depr_on_disposals_py, closing_acc_depreciation_py,
                     depreciation_rate, useful_life_years
                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING ppe_id
             ''', (company_id, asset_class,
                   opening_gross_block_cy, additions_cy, disposals_gross_cy, closing_gross_block_cy,
                   opening_acc_depreciation_cy, depreciation_for_year_cy,
@@ -201,17 +202,17 @@ class PPE:
         try:
             cursor.execute('''
                 UPDATE ppe_schedule SET
-                    asset_class = ?,
-                    opening_gross_block_cy = ?, additions_cy = ?, disposals_gross_cy = ?,
-                    closing_gross_block_cy = ?,
-                    opening_acc_depreciation_cy = ?, depreciation_for_year_cy = ?,
-                    acc_depr_on_disposals_cy = ?, closing_acc_depreciation_cy = ?,
-                    opening_gross_block_py = ?, additions_py = ?, disposals_gross_py = ?,
-                    closing_gross_block_py = ?,
-                    opening_acc_depreciation_py = ?, depreciation_for_year_py = ?,
-                    acc_depr_on_disposals_py = ?, closing_acc_depreciation_py = ?,
-                    depreciation_rate = ?, useful_life_years = ?,
-                    updated_at = NOW()
+                    asset_class = %s,
+                    opening_gross_block_cy = %s, additions_cy = %s, disposals_gross_cy = %s,
+                    closing_gross_block_cy = %s,
+                    opening_acc_depreciation_cy = %s, depreciation_for_year_cy = %s,
+                    acc_depr_on_disposals_cy = %s, closing_acc_depreciation_cy = %s,
+                    opening_gross_block_py = %s, additions_py = %s, disposals_gross_py = %s,
+                    closing_gross_block_py = %s,
+                    opening_acc_depreciation_py = %s, depreciation_for_year_py = %s,
+                    acc_depr_on_disposals_py = %s, closing_acc_depreciation_py = %s,
+                    depreciation_rate = %s, useful_life_years = %s,
+                    updated_at = %s
                 WHERE ppe_id = %s
             ''', (asset_class,
                   opening_gross_block_cy, additions_cy, disposals_gross_cy, closing_gross_block_cy,
@@ -220,7 +221,7 @@ class PPE:
                   opening_gross_block_py, additions_py, disposals_gross_py, closing_gross_block_py,
                   opening_acc_depreciation_py, depreciation_for_year_py,
                   acc_depr_on_disposals_py, closing_acc_depreciation_py,
-                  depreciation_rate, useful_life_years, ppe_id))
+                  depreciation_rate, useful_life_years, datetime.now(), ppe_id))
             
             conn.commit()
             
