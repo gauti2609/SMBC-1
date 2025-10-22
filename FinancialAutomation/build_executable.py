@@ -38,6 +38,10 @@ def get_platform_settings():
 def create_spec_file(settings):
     """Create PyInstaller spec file"""
     
+    # Determine icon path - check if it exists at build time
+    icon_path = settings.get('icon', '')
+    icon_line = f"icon='{icon_path}'," if icon_path and os.path.exists(icon_path) else "icon=None,"
+    
     spec_content = f"""# -*- mode: python ; coding: utf-8 -*-
 import os
 
@@ -130,7 +134,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='{settings['icon']}' if os.path.exists('{settings['icon']}') else None,
+    {icon_line}
 )
 """
     

@@ -30,7 +30,8 @@ jobs:
     - name: Create resources directory
       run: |
         cd FinancialAutomation
-        mkdir -p resources/icons
+        if not exist resources\icons mkdir resources\icons
+      shell: cmd
         
     - name: Build executable
       run: |
