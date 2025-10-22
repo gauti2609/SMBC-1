@@ -39,21 +39,21 @@ def create_spec_file(settings):
     """Create PyInstaller spec file"""
     
     spec_content = f"""# -*- mode: python ; coding: utf-8 -*-
+import os
 
 block_cipher = None
+
+# Only include directories that exist
+datas = []
+for item in [('config', 'config'), ('models', 'models'), ('views', 'views'), ('controllers', 'controllers')]:
+    if os.path.exists(item[0]):
+        datas.append(item)
 
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[
-        ('resources', 'resources'),
-        ('config', 'config'),
-        ('models', 'models'),
-        ('views', 'views'),
-        ('controllers', 'controllers'),
-        ('utils', 'utils'),
-    ],
+    datas=datas,
     hiddenimports=[
         'PyQt5',
         'PyQt5.QtCore',
