@@ -169,57 +169,6 @@ def get_all():
 
 ---
 
-### 6. Potential Integer Overflow in Share Capital
-**File:** `VBA_Module1.bas`  
-**Lines:** 1528-1529  
-**Severity:** MEDIUM  
-
-**Description:**  
-Division formula may result in #DIV/0 error when B10 (closing shares) is zero.
-
-**Current Code:**
-```vba
-ws.Range("C15").Formula = "=IFERROR(B15/$B$10,0)"
-ws.Range("C16").Formula = "=IFERROR(B16/$B$10,0)"
-```
-
-**Issue:**  
-- While IFERROR handles the division by zero, it masks the problem
-- Should validate that shares exist before calculating percentage
-- User won't know if data is incomplete vs. intentionally zero
-
-**Impact:**  
-- Misleading zero percentages when no shares are allocated
-- Data quality issues
-
----
-
-### 7. Missing Error Handler in Setup Function
-**File:** `VBA_Module1.bas`  
-**Lines:** 1523-1525  
-**Severity:** MEDIUM  
-
-**Description:**  
-Formula assignments in `Setup_InputShareCapitalSheet` have no validation.
-
-**Current Code:**
-```vba
-ws.Range("D8").Formula = "=B8*C3"
-ws.Range("E8").Formula = "=C8*C3"
-ws.Range("D9").Formula = "=B9*C3"
-```
-
-**Issue:**  
-- Hardcoded cell references (C3) may not exist or contain invalid data
-- No validation that C3 contains face value
-- If sheet structure changes, formulas break silently
-
-**Impact:**  
-- #REF! errors in financial statements
-- Incorrect calculations
-
----
-
 ## Low Priority Bugs / Code Quality Issues
 
 ### 6. Missing Input Validation in Database Initialization
