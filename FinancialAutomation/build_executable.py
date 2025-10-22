@@ -193,44 +193,49 @@ def build_executable(settings):
 def create_distribution_package(settings):
     """Create distribution package with executable and documentation"""
     
-    dist_dir = Path('distribution')
-    dist_dir.mkdir(exist_ok=True)
-    
-    package_name = f"FinancialAutomation_{platform.system()}"
-    package_dir = dist_dir / package_name
-    
-    # Clean and create package directory
-    if package_dir.exists():
-        shutil.rmtree(package_dir)
-    package_dir.mkdir()
-    
-    print(f"\n📦 Creating distribution package: {package_name}")
-    
-    # Copy executable
-    exe_name = f"{settings['name']}{settings['extension']}"
-    exe_src = Path('dist') / exe_name
-    
-    if exe_src.exists():
-        if exe_src.is_dir():  # macOS .app bundle
-            shutil.copytree(exe_src, package_dir / exe_name)
+    try:
+        dist_dir = Path('distribution')
+        dist_dir.mkdir(exist_ok=True)
+        
+        package_name = f"FinancialAutomation_{platform.system()}"
+        package_dir = dist_dir / package_name
+        
+        # Clean and create package directory
+        if package_dir.exists():
+            shutil.rmtree(package_dir)
+        package_dir.mkdir()
+        
+        print(f"\n📦 Creating distribution package: {package_name}")
+        
+        # Copy executable
+        exe_name = f"{settings['name']}{settings['extension']}"
+        exe_src = Path('dist') / exe_name
+        
+        if exe_src.exists():
+            if exe_src.is_dir():  # macOS .app bundle
+                shutil.copytree(exe_src, package_dir / exe_name)
+            else:
+                shutil.copy2(exe_src, package_dir / exe_name)
+            print(f"   ✅ Copied {exe_name}")
         else:
-            shutil.copy2(exe_src, package_dir / exe_name)
-        print(f"   ✅ Copied {exe_name}")
-    
-    # Copy documentation
-    docs = [
-        'USER_GUIDE.md',
-        '00_START_HERE.md',
-        'README.md',
-    ]
-    
-    for doc in docs:
-        if Path(doc).exists():
-            shutil.copy2(doc, package_dir / doc)
-            print(f"   ✅ Copied {doc}")
-    
-    # Create README.txt for package
-    readme_content = f"""
+            print(f"   ⚠️  Executable not found: {exe_src}")
+            print(f"   Skipping distribution package creation")
+            return False
+        
+        # Copy documentation
+        docs = [
+            'USER_GUIDE.md',
+            '00_START_HERE.md',
+            'README.md',
+        ]
+        
+        for doc in docs:
+            if Path(doc).exists():
+                shutil.copy2(doc, package_dir / doc)
+                print(f"   ✅ Copied {doc}")
+        
+        # Create README.txt for package
+        readme_content = f"""
 Financial Automation Application
 ================================
 
@@ -260,34 +265,43 @@ Date: October 19, 2025
 
 © 2025 Financial Automation. All rights reserved.
 """
-    
-    with open(package_dir / 'README.txt', 'w') as f:
-        f.write(readme_content)
-    print("   ✅ Created README.txt")
-    
-    # Create ZIP archive
-    print(f"\n📦 Creating ZIP archive...")
-    shutil.make_archive(
-        str(dist_dir / package_name),
-        'zip',
-        dist_dir,
-        package_name
-    )
-    
-    zip_path = dist_dir / f"{package_name}.zip"
-    if zip_path.exists():
-        size_mb = zip_path.stat().st_size / (1024 * 1024)
-        print(f"   ✅ Created {package_name}.zip ({size_mb:.1f} MB)")
-    
-    print(f"\n✅ Distribution package ready: {zip_path}")
-    print(f"\n📂 Package contents:")
-    print(f"   • {exe_name}")
-    print(f"   • USER_GUIDE.md")
-    print(f"   • 00_START_HERE.md")
-    print(f"   • README.md")
-    print(f"   • README.txt")
-    
-    return True
+        
+        with open(package_dir / 'README.txt', 'w') as f:
+            f.write(readme_content)
+        print("   ✅ Created README.txt")
+        
+        # Create ZIP archive
+        print(f"\n📦 Creating ZIP archive...")
+        shutil.make_archive(
+            str(dist_dir / package_name),
+            'zip',
+            dist_dir,
+            package_name
+        )
+        
+        zip_path = dist_dir / f"{package_name}.zip"
+        if zip_path.exists():
+            size_mb = zip_path.stat().st_size / (1024 * 1024)
+            print(f"   ✅ Created {package_name}.zip ({size_mb:.1f} MB)")
+        
+        print(f"\n✅ Distribution package ready: {zip_path}")
+        print(f"\n📂 Package contents:")
+        print(f"   • {exe_name}")
+        if Path(package_dir / 'USER_GUIDE.md').exists():
+            print(f"   • USER_GUIDE.md")
+        if Path(package_dir / '00_START_HERE.md').exists():
+            print(f"   • 00_START_HERE.md")
+        if Path(package_dir / 'README.md').exists():
+            print(f"   • README.md")
+        print(f"   • README.txt")
+        
+        return True
+        
+    except Exception as e:
+        print(f"\n❌ Error creating distribution package: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 def main():
     """Main build process"""
@@ -326,13 +340,17 @@ def main():
         
         # Ask to create distribution package (skip in CI)
         if is_ci:
-            create_distribution_package(settings)
+            pkg_result = create_distribution_package(settings)
+            if not pkg_result:
+                print("\n⚠️  Warning: Distribution package creation failed, but executable was built successfully")
         else:
             print("\n" + "="*80)
             response = input("\n📦 Create distribution package (ZIP)? [Y/n]: ").strip().lower()
             
             if response in ['', 'y', 'yes']:
-                create_distribution_package(settings)
+                pkg_result = create_distribution_package(settings)
+                if not pkg_result:
+                    print("\n⚠️  Warning: Distribution package creation failed, but executable was built successfully")
         
         print("\n" + "="*80)
         print("🎉 BUILD PROCESS COMPLETE!")
