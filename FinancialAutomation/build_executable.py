@@ -317,12 +317,18 @@ def main():
     # Build executable
     if build_executable(settings):
         
-        # Ask to create distribution package
-        print("\n" + "="*80)
-        response = input("\n📦 Create distribution package (ZIP)? [Y/n]: ").strip().lower()
+        # Check if running in CI environment
+        is_ci = os.environ.get('CI') == 'true' or os.environ.get('GITHUB_ACTIONS') == 'true'
         
-        if response in ['', 'y', 'yes']:
+        # Ask to create distribution package (skip in CI)
+        if is_ci:
             create_distribution_package(settings)
+        else:
+            print("\n" + "="*80)
+            response = input("\n📦 Create distribution package (ZIP)? [Y/n]: ").strip().lower()
+            
+            if response in ['', 'y', 'yes']:
+                create_distribution_package(settings)
         
         print("\n" + "="*80)
         print("🎉 BUILD PROCESS COMPLETE!")
